@@ -24,6 +24,7 @@ def index(request):
     context_dict['pages'] = page_list
     
     visitor_cookie_handler(request)
+
     return render(request, 'rango/index.html', context=context_dict)
 
 
@@ -63,7 +64,7 @@ def add_category(request):
 def add_page(request, category_name_slug):
     try:
         category = Category.objects.get(slug=category_name_slug)
-    except:
+    except Category.DoesNotExist:
         category = None
     
     if category is None:
@@ -149,6 +150,7 @@ def get_server_side_cookie(request, cookie, default_val=None):
     if not val:
         val = default_val
     return val
+
 
 def visitor_cookie_handler(request):
     visits = int(get_server_side_cookie(request, 'visits', '1'))
